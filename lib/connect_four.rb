@@ -49,8 +49,15 @@ class ConnectFour
   def show_board
     puts "Connect Four - Player #{@current_player}"
     # system('clear')
-    @board.each do |value|
-      print value
+    @board.each do |valueline|
+      valueline.each do | value |
+        entity = if value == 0
+                "\U+25CF".encode('utf-8') # Black circle
+              else
+                "\U+25CB".encode('utf-8') # White circle
+              end
+        print " #{entity} "
+      end
       puts ""
     end
   end
