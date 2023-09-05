@@ -102,7 +102,7 @@ class ConnectFour
   # Check if the player has won the game || the game resulted in a tie
   def game_over
     counter = 0
-    # Traverse vertically
+    # Traverse horizontally
     (@cols - 1).times do |col |
       (@rows - 1).times do |row |
         counter += 1 if @board[col][row] == @current_player
@@ -111,11 +111,11 @@ class ConnectFour
       end
     end
 
-    # Traverse horizontally
+    # Traverse vertically
     (@rows - 1).times do |row |
       (@cols - 1).times do |col |
-          counter += 1 if @board[row][col] == @current_player
-          counter = 0 if @board[col][col] != @current_player
+          counter += 1 if @board[col][row] == @current_player
+          counter = 0 if @board[col][row] != @current_player
           return true if counter == 4
       end
     end
@@ -152,3 +152,4 @@ class ConnectFour
 
 
 end
+
