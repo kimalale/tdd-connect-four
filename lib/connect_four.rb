@@ -111,6 +111,7 @@ class ConnectFour
       end
     end
 
+    counter = 0
     # Traverse vertically
     (@rows - 1).times do |row |
       (@cols - 1).times do |col |
