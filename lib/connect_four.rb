@@ -7,6 +7,7 @@ class ConnectFour
     @current_player = 0
     @game_state = true
     @message = nil
+    @log_message = nil
   end
 
   def create_board(rows, cols)
@@ -28,11 +29,8 @@ class ConnectFour
 
   #Place the player's ball at the specified column
   def place_ball(col)
-    col = col.to_i
-    log_full = false
-    log_full = true if !is_column_not_full?(col) { |row | row.nil? } # check if column is empty
-    puts "Column is full" if log_full
-    return if log_full
+    @log_message = "Column #{col} is full" if !is_column_not_full?(col) { |row | row.nil? } # check if column is empty
+    return if @log_message
 
     to_break = false # keep checking if column is empty before changing it
     row = @rows - 1 # total rows of board
@@ -42,24 +40,37 @@ class ConnectFour
       break if to_break # stop the loop after finding empty space and assigning/placing the player
       row -= 1
     end
-    turn_player
+  end
+
+  # Return a symbol representation of the current player
+  def entity_character(entity_value)
+    entity_symbol = nil
+
+    if entity_value == 0
+      entity_symbol = "\u25CF" # Black circle
+    elsif entity_value == 1
+        entity_symbol = "\u25CB" # White circle
+    else
+        entity_symbol = " "
+    end
+
+      return entity_symbol
   end
 
   # Display the state of the game
   def show_board
-    puts "Connect Four - Player #{@current_player}"
-    # system('clear')
+    system('cls')
+    puts "Connect Four - Player #{self.entity_character(@current_player)}"
+    puts "<< Note - #{@log_message} >>" if @log_message
     @board.each do |valueline|
       valueline.each do | value |
-        entity = if value == 0
-                "\U+25CF".encode('utf-8') # Black circle
-              else
-                "\U+25CB".encode('utf-8') # White circle
-              end
+        entity = self.entity_character(value)
         print " #{entity} "
       end
       puts ""
     end
+
+    @log_message = nil if @log_message
   end
 
   def board_contains?(board)
@@ -76,7 +87,7 @@ class ConnectFour
 
   def check_win
     @message =  if self.game_over  # Check if any of the players win the game
-                  "Player #{@current_player} wins!"
+                  "Player #{self.entity_character(@current_player)} wins!"
                 elsif board_contains?(@board) { | col | col == 0 || col == 1 }  # Check if the game ends in a tie
                   "Game ends in draw!"
                 else
@@ -84,6 +95,8 @@ class ConnectFour
                 end
 
     @game_state = false if @message
+    self.show_board if @message
+    self.turn_player if !@message
   end
 
   # Check if the player has won the game || the game resulted in a tie
@@ -147,9 +160,10 @@ player_input = nil
 until !connect_four.game_state do
   connect_four.show_board
   puts "Enter column to insert ball: "
-  player_input = gets.chomp
+  player_input = gets.chomp.to_i
   connect_four.place_ball(player_input)
   connect_four.check_win
+
 end
 
 puts connect_four.message
