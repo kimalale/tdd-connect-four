@@ -125,7 +125,7 @@ class ConnectFour
     # Traverse diagonally (up-right diagonal)
     (3..@rows - 1).each do |row |
       (0..3).each do |col |
-        does_player_win = @board[row][col] && @board[row - 1][col + 1] && @board[row - 2][col + 2] && @board[row - 3][col + 3]
+        does_player_win = @board[row][col] == @current_player && @board[row - 1][col + 1] == @current_player && @board[row - 2][col + 2] == @current_player && @board[row - 3][col + 3] == @current_player
         return true if does_player_win
       end
     end
@@ -134,7 +134,7 @@ class ConnectFour
     # Traverse diagonally (up-left diagonal)
     (0..2).each do |row |
       (0..3).each do |col |
-        does_player_win = @board[row][col] && @board[row + 1][col + 1] && @board[row + 2][col + 2] && @board[row + 3][col + 3]
+        does_player_win = @board[row][col] == @current_player && @board[row + 1][col + 1] == @current_player && @board[row + 2][col + 2] == @current_player && @board[row + 3][col + 3] == @current_player
         return true if does_player_win
       end
     end
